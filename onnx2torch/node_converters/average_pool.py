@@ -45,7 +45,8 @@ def _(node: OnnxNode, graph: OnnxGraph) -> OperationConverterResult:
         auto_pad=node_attributes.get('auto_pad', 'NOTSET'),
     )
     if padding_module is not None:
-        raise NotImplementedError('AvgPool with non symmetrical padding is not implemented.')
+        # raise NotImplementedError('AvgPool with non symmetrical padding is not implemented.')
+        padding = 0
 
     torch_module = avgpool_class(
         kernel_size=kernel_shape,
