@@ -64,15 +64,15 @@ def _(node: OnnxNode, graph: OnnxGraph) -> OperationConverterResult:
         except KeyError as exc:
             raise NotImplementedError('Dynamic value of min/max is not implemented') from exc
 
-        torch_module = _create_torch_module(min_val=min_val, max_val=max_val)
+    torch_module = _create_torch_module(min_val=min_val, max_val=max_val)
 
-        return OperationConverterResult(
-            torch_module=torch_module,
-            onnx_mapping=OnnxMapping(
-                inputs=(node.input_values[0],),
-                outputs=node.output_values,
-            ),
-        )
+    return OperationConverterResult(
+        torch_module=torch_module,
+        onnx_mapping=OnnxMapping(
+            inputs=(node.input_values[0],),
+            outputs=node.output_values,
+        ),
+    )
 
 
 @add_converter(operation_type='Clip', version=6)
