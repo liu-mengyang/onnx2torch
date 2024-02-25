@@ -57,7 +57,10 @@ def _(node: OnnxNode, graph: OnnxGraph) -> OperationConverterResult:
     epsilon = node_attributes.get('epsilon', 1e-5)
     momentum = 1 - node_attributes.get('momentum', 0.9)  # See PyTorch documentation for batch norm.
 
-    if all(value_name in graph.initializers for value_name in node.input_values[1:]) and len(node.output_values) == 1:
+    if len(node.output_values) != 1:
+        print("WARN: MAYBE wrong for skipping mean/var output bn layer")
+    
+    if all(value_name in graph.initializers for value_name in node.input_values[1:]):
         input_value_info = graph.value_info[node.input_values[0]]
         input_shape = get_shape_from_value_info(input_value_info)
         spatial_rank = len(input_shape) - 2
@@ -90,8 +93,8 @@ def _(node: OnnxNode, graph: OnnxGraph) -> OperationConverterResult:
             outputs=node.output_values,
         )
     else:
-        if len(node.output_values) != 1:
-            raise NotImplementedError('BatchNorm operation with mean/var output is not implemented')
+    #     if len(node.output_values) != 1:
+    #         raise NotImplementedError('BatchNorm operation with mean/var output is not implemented')
 
         torch_module = OnnxBatchNorm(momentum=momentum, epsilon=epsilon)
         onnx_mapping = onnx_mapping_from_node(node)
