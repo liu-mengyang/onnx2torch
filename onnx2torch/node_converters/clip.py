@@ -53,11 +53,14 @@ def _(node: OnnxNode, graph: OnnxGraph) -> OperationConverterResult:
     min_name = node.input_values[1] if len(node.input_values) > 1 else None
     max_name = node.input_values[2] if len(node.input_values) > 2 else None
 
-    try:
-        min_val = float(get_const_value(min_name, graph)) if min_name is not None else None
-        max_val = float(get_const_value(max_name, graph)) if max_name is not None else None
-    except KeyError as exc:
-        raise NotImplementedError('Dynamic value of min/max is not implemented') from exc
+    min_val = graph.initializers[min_name].to_torch()
+    max_val = graph.initializers[max_name].to_torch()
+
+    # try:
+    #     min_val = float(get_const_value(min_name, graph)) if min_name is not None else None
+    #     max_val = float(get_const_value(max_name, graph)) if max_name is not None else None
+    # except KeyError as exc:
+    #     raise NotImplementedError('Dynamic value of min/max is not implemented') from exc
 
     torch_module = _create_torch_module(min_val=min_val, max_val=max_val)
 
