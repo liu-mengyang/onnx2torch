@@ -53,7 +53,7 @@ def _(node: OnnxNode, graph: OnnxGraph) -> OperationConverterResult:
         stride=strides,
         padding=padding,
         count_include_pad=count_include_pad == 1,
-        ceil_mode=ceil_mode == 1,
+        ceil_mode=True,
     )
 
     return OperationConverterResult(
