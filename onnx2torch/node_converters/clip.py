@@ -35,10 +35,6 @@ class OnnxClip(nn.Module, OnnxToTorchModule):  # pylint: disable=missing-docstri
 def _create_torch_module(min_val: Optional[torch.Tensor], max_val: Optional[torch.Tensor]) -> nn.Module:
     if min_val is None and max_val is None:
         torch_module = nn.Identity()
-    elif min_val == 0 and max_val is None:
-        torch_module = nn.ReLU()
-    elif min_val == 0 and max_val == 6:
-        torch_module = nn.ReLU6()
     else:
         torch_module = OnnxClip(min_val=min_val, max_val=max_val)
 

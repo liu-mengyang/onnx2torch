@@ -47,13 +47,13 @@ def _(node: OnnxNode, graph: OnnxGraph) -> OperationConverterResult:
     if padding_module is not None:
         # raise NotImplementedError('AvgPool with non symmetrical padding is not implemented.')
         padding = 0
-
+        
     torch_module = avgpool_class(
         kernel_size=kernel_shape,
         stride=strides,
         padding=padding,
         count_include_pad=count_include_pad == 1,
-        ceil_mode=ceil_mode == 1,
+        ceil_mode=True,
     )
 
     return OperationConverterResult(
