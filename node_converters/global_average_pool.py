@@ -38,6 +38,9 @@ class OnnxGlobalAveragePoolWithKnownInputShape(
         self._x_dims = list(range(2, len(input_shape)))
 
     def forward(self, input_tensor: torch.Tensor) -> torch.Tensor:  # pylint: disable=missing-function-docstring
+        if len(self._x_dims) == 0:
+            self._x_dims = list(range(2, len(input_tensor.shape)))
+        
         forward_lambda = lambda: torch.mean(input_tensor, dim=self._x_dims, keepdim=True)
 
         if torch.onnx.is_in_onnx_export():

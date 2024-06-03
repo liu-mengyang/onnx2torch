@@ -101,6 +101,10 @@ def convert(  # pylint: disable=too-many-locals, too-many-branches, too-many-sta
     # IMPORTANT: nodes already topologically sorted
     for name, onnx_node in onnx_graph.nodes.items():
         version = opset_import[onnx_node.domain]
+        if onnx_node.operation_type == "LayerNormalization":
+            version = 17
+        elif onnx_node.operation_type == "Gelu":
+            version = 20
         converter = get_converter(
             domain=onnx_node.domain,
             operation_type=onnx_node.operation_type,

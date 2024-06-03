@@ -173,6 +173,14 @@ def _(node: OnnxNode, graph: OnnxGraph) -> OperationConverterResult:  # pylint: 
         onnx_mapping=onnx_mapping_from_node(node=node),
     )
 
+@add_converter(operation_type="Gelu", version=20)
+def _(node: OnnxNode, graph: OnnxGraph) -> OperationConverterResult:  # pylint: disable=unused-argument
+
+    return OperationConverterResult(
+        torch_module=nn.GELU(),
+        onnx_mapping=onnx_mapping_from_node(node=node),
+    )
+
 
 @add_converter(operation_type='Selu', version=6)
 def _(node: OnnxNode, graph: OnnxGraph) -> OperationConverterResult:  # pylint: disable=unused-argument

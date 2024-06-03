@@ -53,9 +53,9 @@ def _(node: OnnxNode, graph: OnnxGraph) -> OperationConverterResult:
     if all(value_name in graph.initializers for value_name in node.input_values[1:]):
         input_value_info = graph.value_info[node.input_values[0]]
         input_shape = get_shape_from_value_info(input_value_info)
-
+        normalized_shape = graph.initializers[node.input_values[1]].to_torch().shape
         torch_module = nn.LayerNorm(
-            normalized_shape=input_shape[axis:],
+            normalized_shape=normalized_shape,
             eps=epsilon,
             elementwise_affine=True,
         )
