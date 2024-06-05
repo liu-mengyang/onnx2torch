@@ -105,6 +105,8 @@ def convert(  # pylint: disable=too-many-locals, too-many-branches, too-many-sta
             version = 17
         elif onnx_node.operation_type == "Gelu":
             version = 20
+        elif onnx_node.operation_type == "HardSwish":
+            version = 14
         converter = get_converter(
             domain=onnx_node.domain,
             operation_type=onnx_node.operation_type,
